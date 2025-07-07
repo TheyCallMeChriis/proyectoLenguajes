@@ -1,0 +1,104 @@
+<mat-card>
+  <div class="p-6 bg-white border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <mat-card-header class="bg-gray-200 h-15 justify-center">
+      <mat-card-title class="!font-extrabold text-[1.5rem]">Catálogo de Artefactos</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false); limpiar();">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Filtrar - Click para {{ panelOpenState() ? 'cerrar' : 'abrir' }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+          <mat-label>Serie</mat-label>
+          <input matInput #fserie id="fserie" (keyup)="onFiltroChange({ serie: fserie.value, modelo: fmodelo.value, marca: fmarca.value, categoria: fcategoria.value })" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Modelo</mat-label>
+          <input matInput #fmodelo id="fmodelo" (keyup)="onFiltroChange({ serie: fserie.value, modelo: fmodelo.value, marca: fmarca.value, categoria: fcategoria.value })" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Marca</mat-label>
+          <input matInput #fmarca id="fmarca" (keyup)="onFiltroChange({ serie: fserie.value, modelo: fmodelo.value, marca: fmarca.value, categoria: fcategoria.value })" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Categoría</mat-label>
+          <input matInput #fcategoria id="fcategoria" (keyup)="onFiltroChange({ serie: fserie.value, modelo: fmodelo.value, marca: fmarca.value, categoria: fcategoria.value })" />
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <table mat-table class="md-flex flex-col" [dataSource]="dataSource()">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <ng-container matColumnDef="serie">
+            <th mat-header-cell *matHeaderCellDef>Serie</th>
+            <td mat-cell *matCellDef="let element">{{ element.serie }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="modelo">
+            <th mat-header-cell *matHeaderCellDef>Modelo</th>
+            <td mat-cell *matCellDef="let element">{{ element.modelo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="marca">
+            <th mat-header-cell *matHeaderCellDef>Marca</th>
+            <td mat-cell *matCellDef="let element">{{ element.marca }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="categoria">
+            <th mat-header-cell *matHeaderCellDef>Categoría</th>
+            <td mat-cell *matCellDef="let element">{{ element.categoria }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef>Descripción</th>
+            <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="botonera">
+            <th mat-header-cell *matHeaderCellDef class="place-items-center">
+              <button mat-icon.button (click)="onNuevo()" class="bg-blue-700 hover:bg-blue-800 text-white rounded-lg px-3 py-1">
+                <mat-icon>add</mat-icon>
+              </button>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="flex content-around">
+                <button mat-icon.button (click)="onInfo(element.id)" class="bg-purple-700 hover:bg-purple-800 text-white rounded-lg px-3 py-1 mx-2">
+                  <mat-icon>info</mat-icon>
+                </button>
+
+                <button mat-icon.button (click)="onEditar(element.id)" class="bg-yellow-400 hover:bg-yellow-500 text-white rounded-lg px-3 py-1 mx-2">
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                @if (+srvAuth.userActualS().rol === 1) {
+                <button mat-icon.button (click)="onEliminar(element.id)" class="bg-red-700 hover:bg-red-800 text-white rounded-lg px-3 py-1 mx-2">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                }
+              </div>
+            </td>
+          </ng-container>
+        </thead>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+      </table>
+    </mat-card-content>
+
+    <mat-card-footer class="bg-gray-200 h-15 flex items-center justify-center">
+      <button (click)="onImprimir()" mat-button class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-1 rounded mx-2">
+        <mat-icon>print</mat-icon> Imprimir
+      </button>
+
+      <button [routerLink]="['/home']" mat-button class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded mx-2">
+        <mat-icon>cancel</mat-icon> Cerrar
+      </button>
+    </mat-card-footer>
+  </div>
+</mat-card>

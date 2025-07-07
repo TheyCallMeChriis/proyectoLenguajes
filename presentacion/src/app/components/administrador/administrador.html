@@ -1,0 +1,132 @@
+<mat-card>
+  <div class="p-6 bg-white border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <mat-card-header class="bg-gray-200 h-15 justify-center">
+      <mat-card-title class="!font-extrabold text-[1.5rem]">Catálogo Administradores</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false); limpiar();">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Filtrar - Click para {{ panelOpenState() ? 'cerrar' : 'abrir' }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+          <mat-label>ID Administrador</mat-label>
+          <input matInput #fidAdministrador id="fidAdministrador" (keyup)="onFiltroChange({
+            idAdministrador: fidAdministrador.value,
+            nombre: fnombre.value,
+            apellido1: fapellido1.value,
+            apellido2: fapellido2.value
+          })">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input matInput #fnombre id="fnombre" (keyup)="onFiltroChange({
+            idAdministrador: fidAdministrador.value,
+            nombre: fnombre.value,
+            apellido1: fapellido1.value,
+            apellido2: fapellido2.value
+          })">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Primer Apellido</mat-label>
+          <input matInput #fapellido1 id="fapellido1" (keyup)="onFiltroChange({
+            idAdministrador: fidAdministrador.value,
+            nombre: fnombre.value,
+            apellido1: fapellido1.value,
+            apellido2: fapellido2.value
+          })">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Segundo Apellido</mat-label>
+          <input matInput #fapellido2 id="fapellido2" (keyup)="onFiltroChange({
+            idAdministrador: fidAdministrador.value,
+            nombre: fnombre.value,
+            apellido1: fapellido1.value,
+            apellido2: fapellido2.value
+          })">
+        </mat-form-field>
+      </mat-expansion-panel>
+
+      <table mat-table class="md-flex flex-col" [dataSource]="dataSource()">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <ng-container matColumnDef="idAdministrador">
+            <th mat-header-cell *matHeaderCellDef>ID Administrador</th>
+            <td mat-cell *matCellDef="let element">{{ element.idAdministrador }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="apellido1">
+            <th mat-header-cell *matHeaderCellDef>Primer Apellido</th>
+            <td mat-cell *matCellDef="let element">{{ element.apellido1 }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="apellido2">
+            <th mat-header-cell *matHeaderCellDef>Segundo Apellido</th>
+            <td mat-cell *matCellDef="let element">{{ element.apellido2 }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="celular">
+            <th mat-header-cell *matHeaderCellDef>Celular</th>
+            <td mat-cell *matCellDef="let element">{{ element.celular }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="correo">
+            <th mat-header-cell *matHeaderCellDef>Correo</th>
+            <td mat-cell *matCellDef="let element">{{ element.correo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="botonera">
+            <th mat-header-cell *matHeaderCellDef class="place-items-center">
+              <button mat-icon.button (click)="onNuevo()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-0.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <mat-icon>add</mat-icon>
+              </button>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="flex content-around">
+                <button mat-icon.button (click)="onInfo(element.id)" class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
+                  <mat-icon>info</mat-icon>
+                </button>
+
+                <button mat-icon.button (click)="onEditar(element.id)" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:focus:ring-yellow-900">
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                @if (+srvAuth.userActualS().rol === 1) {
+                  <button mat-icon.button (click)="onEliminar(element.id)" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+
+                  <button mat-icon.button (click)="onResetearPassw(element.id)" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    <mat-icon>key</mat-icon>
+                  </button>
+                }
+              </div>
+            </td>
+          </ng-container>
+        </thead>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+      </table>
+    </mat-card-content>
+
+    <mat-card-footer class="bg-gray-200 h-15 flex items-center justify-center">
+      <button (click)="onImprimir()" mat-button class="!bg-esmerald-700 me-2">
+        <mat-icon>print</mat-icon>Imprimir
+      </button>
+      <button [routerLink]="['/home']" mat-button class="!bg-red me-2">
+        <mat-icon>cancel</mat-icon>Cerrar
+      </button>
+    </mat-card-footer>
+  </div>
+</mat-card>

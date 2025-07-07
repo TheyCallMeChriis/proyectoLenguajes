@@ -1,0 +1,90 @@
+### Crear un nuevo cliente
+POST http://localhost:8000/api/cliente
+Content-Type: application/json
+
+ {
+  "idCliente": "11",
+  "nombre": "Christopher",
+  "apellido1": "Leon",
+  "apellido2": "Salinas",
+  "telefono": "60005000",
+  "celular": "60005000",
+  "direccion": "Limon",
+  "correo": "chrisls@gmail.com"
+}
+
+GET http://localhost:8000/api/artefacto
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NTE4NjU4ODYsInJvbCI6IjEiLCJub20iOiJTb2ZpYSJ9.WbPSHVjCHbL1_QaVJ1uyWc-1sQdRQ02vv4jkmcDYULo
+
+### Crear nuevo técnico
+POST http://localhost:8000/api/tecnico
+Content-Type: application/json
+
+{
+  "idTecnico": "TEC100",
+  "nombre": "Andrea",
+  "apellido1": "Chaves",
+  "apellido2": "Morales",
+  "telefono": "22556688",
+  "celular": "88886655",
+  "direccion": "Cartago",
+  "correo": "andrea@correo.com",
+  "passw": "123456"
+}
+
+### Crear nuevo administrador
+
+POST http://localhost:8000/api/administrador
+Content-Type: application/json
+
+{
+  "idAdministrador": "01",
+  "nombre": "Andrea",
+  "apellido1": "Chaves",
+  "apellido2": "Morales",
+  "telefono": "22556688",
+  "celular": "88886655",
+  "direccion": "Cartago",
+  "correo": "andrea.admin@correo.com"
+}
+
+### Crear nuevo caso
+POST http://localhost:8000/api/caso
+Content-Type: application/json
+
+{
+  "idTecnico": "555",
+  "idCreador": "123",
+  "idArtefacto": 7,
+  "descripcion": "Artefacto con problema de encendido"
+}
+
+### Crear nuevo oficinista
+POST http://localhost:8000/api/oficinista
+Content-Type: application/json
+
+{
+  "idOficinista": "777",
+  "nombre": "María",
+  "apellido1": "Lopez",
+  "apellido2": "Soto",
+  "telefono": "22224444",
+  "celular": "89997777",
+  "direccion": "San José, Costa Rica",
+  "correo": "maria.lopez@correo.com",
+  "passw": "123456"
+}
+
+###
+POST http://localhost:8000/api/artefacto
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NTE4NjkwODcsInJvbCI6IjEiLCJub20iOiJTb2ZpYSJ9.rRjpsjCOBLOFpiJqCe7t-SC-8vHi5b5Vnp8WMRC4Nmc
+
+{
+  "idCliente": 50,
+  "serie": "ABC123",
+  "modelo": "Galaxy S21",
+  "marca": "Samsung",
+  "categoria": "Celular",
+  "descripcion": "Pantalla dañada"
+}

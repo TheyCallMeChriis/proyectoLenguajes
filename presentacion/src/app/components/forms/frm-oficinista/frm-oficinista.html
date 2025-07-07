@@ -1,0 +1,93 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+
+<mat-dialog-content>
+  <form id="miFormulario" [formGroup]="myForm" (ngSubmit)="onGuardar()">
+    <div class="flex flex-col">
+      <!-- ID Oficinista -->
+      <div>
+        <mat-form-field>
+          <mat-label>ID Oficinista</mat-label>
+          <input formControlName="idOficinista" matInput type="text" />
+        </mat-form-field>
+      </div>
+
+      @if (F['idOficinista'].invalid && F['idOficinista'].touched) {
+        @if (F['idOficinista'].errors!['required']) {
+          <small class="text-red-700">La cédula es obligatoria</small>
+        }
+        @if (F['idOficinista'].errors!['minlength']) {
+          <small class="text-rose-700">Entre 9 y 15 dígitos</small>
+        }
+        @if (F['idOficinista'].errors!['maxlength']) {
+          <small class="text-rose-700">Cédula inválida</small>
+        }
+        @if (F['idOficinista'].errors!['pattern']) {
+          <small class="text-rose-700">Formato de cédula no válido</small>
+        }
+      }
+
+      <!-- Nombre y Apellidos -->
+      <div class="md:flex justify-between">
+        <mat-form-field class="w.full md:w-fit">
+          <mat-label>Nombre</mat-label>
+          <input formControlName="nombre" matInput type="text" />
+        </mat-form-field>
+        <mat-form-field class="w.full md:w-fit">
+          <mat-label>Primer Apellido</mat-label>
+          <input formControlName="apellido1" matInput type="text" />
+        </mat-form-field>
+        <mat-form-field class="w.full md:w-fit">
+          <mat-label>Segundo Apellido</mat-label>
+          <input formControlName="apellido2" matInput type="text" />
+        </mat-form-field>
+      </div>
+
+      @if (F['nombre'].invalid && F['nombre'].touched) {
+        @if (F['nombre'].errors!['required']) {
+          <small class="text-rose-700">El nombre es obligatorio</small>
+        }
+        @if (F['nombre'].errors!['minlength']) {
+          <small class="text-rose-700">Entre 2 y 30 caracteres</small>
+        }
+        @if (F['nombre'].errors!['maxlength']) {
+          <small class="text-rose-700">Nombre demasiado largo</small>
+        }
+        @if (F['nombre'].errors!['pattern']) {
+          <small class="text-rose-700">Formato de nombre no válido</small>
+        }
+      }
+
+      <!-- Teléfono, Celular, Correo -->
+      <mat-form-field>
+        <mat-label>Teléfono</mat-label>
+        <input formControlName="telefono" matInput type="text" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Celular</mat-label>
+        <input formControlName="celular" matInput type="text" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Correo</mat-label>
+        <input formControlName="correo" matInput type="text" />
+      </mat-form-field>
+
+      <!-- Dirección -->
+      <mat-form-field>
+        <mat-label>Dirección</mat-label>
+        <textarea formControlName="direccion" matInput></textarea>
+      </mat-form-field>
+
+      <!-- ID interno oculto -->
+      <input type="hidden" formControlName="id" />
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button type="submit" form="miFormulario" mat-button>
+    <mat-icon>save</mat-icon>Guardar
+  </button>
+  <button mat-button [mat-dialog-close]="false">
+    <mat-icon>cancel</mat-icon>Cerrar
+  </button>
+</mat-dialog-actions>
