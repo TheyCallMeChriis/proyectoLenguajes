@@ -55,13 +55,12 @@ export const routes: Routes = [
       roles: [Role.Admin, Role.Oficinista],
     },
   },
-
   {
     path: 'caso',
     loadComponent: () => import('./components/caso/caso').then((m) => m.Caso),
     canActivate: [authGuard],
     data: {
-      roles: [Role.Admin, Role.Oficinista],
+      roles: [Role.Admin, Role.Oficinista, Role.Tecnico, Role.Cliente],
     },
   },
   { path: 'login', component: Login, canActivate: [loginGuard] },

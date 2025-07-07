@@ -1,0 +1,141 @@
+/* Estilos mínimos para complementar Tailwind y Material */
+
+/* Estado Colors */
+.text-blue-600 {
+  color: #2563eb !important;
+}
+
+.text-orange-600 {
+  color: #ea580c !important;
+}
+
+.text-yellow-600 {
+  color: #ca8a04 !important;
+}
+
+.text-purple-600 {
+  color: #9333ea !important;
+}
+
+.text-green-600 {
+  color: #16a34a !important;
+}
+
+.text-red-600 {
+  color: #dc2626 !important;
+}
+
+.text-emerald-600 {
+  color: #059669 !important;
+}
+
+.text-gray-600 {
+  color: #4b5563 !important;
+}
+
+/* Ajustes específicos de Material Angular */
+::ng-deep .mat-mdc-dialog-container {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+::ng-deep .mat-mdc-form-field-outline {
+  border-radius: 0.5rem;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Mejorar el spacing de las opciones del select */
+::ng-deep .mat-mdc-option {
+  padding: 12px 16px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 640px) {
+  ::ng-deep .mat-mdc-dialog-container {
+    margin: 1rem;
+    max-width: none;
+    width: auto;
+  }
+}
+
+/* Estilos personalizados para el select */
+::ng-deep .mat-mdc-select {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: none !important;
+  outline: none !important;
+}
+
+::ng-deep .mat-mdc-select-value {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+::ng-deep .mat-mdc-select-value-text {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+::ng-deep .mat-mdc-select-arrow-wrapper {
+  transform: translateY(0);
+  margin-left: auto;
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: #6b7280;
+}
+
+/* Panel del select */
+::ng-deep .estado-select-panel {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  margin-top: 0.25rem;
+  max-height: 300px;
+}
+
+::ng-deep .estado-select-panel .mat-mdc-option {
+  padding: 0.75rem 1rem;
+  min-height: auto;
+  line-height: 1.5;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+::ng-deep .estado-select-panel .mat-mdc-option:last-child {
+  border-bottom: none;
+}
+
+::ng-deep .estado-select-panel .mat-mdc-option:hover:not([disabled]) {
+  background-color: #f8fafc;
+}
+
+::ng-deep .estado-select-panel .mat-mdc-option.mdc-list-item--selected {
+  background-color: #eff6ff;
+}
+
+::ng-deep .estado-select-panel .mat-mdc-option[disabled] {
+  color: #9ca3af;
+  opacity: 0.6;
+}
+
+/* Borde notorio para el campo de selección de estado */
+.estado-select-borde {
+  border: 2px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  background: #f3f4f6 !important;
+  transition: border-color 0.2s;
+}
+
+.estado-select-borde:focus-within, .estado-select-borde.mat-focused {
+  border-color: #2563eb !important;
+  background: #fff !important;
+}

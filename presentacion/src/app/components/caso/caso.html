@@ -1,135 +1,152 @@
 <mat-card>
-  <div class="p-6 bg-white border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-    <mat-card-header class="bg-gray-200 h-15 justify-center">
-      <mat-card-title class="!font-extrabold text-[1.5rem]">Catálogo Casos</mat-card-title>
+  <div class="p-6 border bg-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+
+    <mat-card-header class="bg-blue-950 h-15 flex justify-center">
+      <mat-card-title class="!font-extrabold text-[1.5rem]" style="color: white;">Catálogo Casos</mat-card-title>
     </mat-card-header>
 
     <mat-card-content class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false); limpiar();">
+
+      <!-- ✅ BOTÓN NUEVO CASO -->
+      @if(puedeCrear()) {
+        <div class="flex justify-end mb-4">
+          <button (click)="onNuevo()" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">
+            <mat-icon>add</mat-icon> Nuevo Caso
+          </button>
+        </div>
+      }
+
+      <!-- Panel de filtros -->
+      <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Filtrar - Click para {{ panelOpenState() ? 'cerrar' : 'abrir' }}
+            Filtrar - Click para {{panelOpenState() ? 'Cerrar' : 'Abrir'}}
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <mat-form-field>
-          <mat-label>ID Caso</mat-label>
-          <input matInput #fid id="fid" (keyup)="onFiltroChange({
-            id: fid.value,
-            nombre_cliente: fnombre.value,
-            marca_artefacto: fmarca.value,
-            estado_actual: festado.value
-          })">
+        <!-- Campos de filtro -->
+        <mat-form-field><mat-label>ID Caso</mat-label>
+          <input matInput #fcodigo (keyup)="onFiltroChange({ codigo: fcodigo.value, idTecnico: fidTecnico.value, idArtefacto: fidArtefacto.value, descripcion: fdescripcion.value })">
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Cliente</mat-label>
-          <input matInput #fnombre id="fnombre" (keyup)="onFiltroChange({
-            id: fid.value,
-            nombre_cliente: fnombre.value,
-            marca_artefacto: fmarca.value,
-            estado_actual: festado.value
-          })">
+        <mat-form-field><mat-label>ID Técnico</mat-label>
+          <input matInput #fidTecnico (keyup)="onFiltroChange({ codigo: fcodigo.value, idTecnico: fidTecnico.value, idArtefacto: fidArtefacto.value, descripcion: fdescripcion.value })">
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Marca Artefacto</mat-label>
-          <input matInput #fmarca id="fmarca" (keyup)="onFiltroChange({
-            id: fid.value,
-            nombre_cliente: fnombre.value,
-            marca_artefacto: fmarca.value,
-            estado_actual: festado.value
-          })">
+        <mat-form-field><mat-label>ID Artefacto</mat-label>
+          <input matInput #fidArtefacto (keyup)="onFiltroChange({ codigo: fcodigo.value, idTecnico: fidTecnico.value, idArtefacto: fidArtefacto.value, descripcion: fdescripcion.value })">
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Estado</mat-label>
-          <input matInput #festado id="festado" (keyup)="onFiltroChange({
-            id: fid.value,
-            nombre_cliente: fnombre.value,
-            marca_artefacto: fmarca.value,
-            estado_actual: festado.value
-          })">
+        <mat-form-field><mat-label>Descripción</mat-label>
+          <input matInput #fdescripcion (keyup)="onFiltroChange({ codigo: fcodigo.value, idTecnico: fidTecnico.value, idArtefacto: fidArtefacto.value, descripcion: fdescripcion.value })">
         </mat-form-field>
+
+        <div class="flex justify-end mt-4">
+          <button (click)="limpiar()" class="text-white bg-gray-500 hover:bg-gray-600 font-medium rounded-lg text-sm px-4 py-2">
+            <mat-icon>clear</mat-icon> Limpiar
+          </button>
+        </div>
       </mat-expansion-panel>
 
-      <table mat-table class="md-flex flex-col" [dataSource]="dataSource()">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID Caso</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-          </ng-container>
+      <!-- Tabla -->
+      <table mat-table [dataSource]="dataSource()">
 
-          <ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef>Descripción</th>
-            <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
-          </ng-container>
+        <!-- Columnas definidas correctamente fuera de thead -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
 
-          <ng-container matColumnDef="fechaEntrada">
-            <th mat-header-cell *matHeaderCellDef>Entrada</th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaEntrada }}</td>
-          </ng-container>
+        <ng-container matColumnDef="idTecnico">
+          <th mat-header-cell *matHeaderCellDef>ID Técnico</th>
+          <td mat-cell *matCellDef="let element">{{element.idTecnico}}</td>
+        </ng-container>
 
-          <ng-container matColumnDef="fechaSalida">
-            <th mat-header-cell *matHeaderCellDef>Salida</th>
-            <td mat-cell *matCellDef="let element">{{ element.fechaSalida || '-' }}</td>
-          </ng-container>
+        <ng-container matColumnDef="idArtefacto">
+          <th mat-header-cell *matHeaderCellDef>Serie Artefacto</th>
+          <td mat-cell *matCellDef="let element">{{element.idArtefacto}}</td>
+        </ng-container>
 
-          <ng-container matColumnDef="nombre_cliente">
-            <th mat-header-cell *matHeaderCellDef>Cliente</th>
-            <td mat-cell *matCellDef="let element">{{ element.nombre_cliente }} {{ element.apellido1_cliente }}</td>
-          </ng-container>
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
+        </ng-container>
 
-          <ng-container matColumnDef="marca_artefacto">
-            <th mat-header-cell *matHeaderCellDef>Marca</th>
-            <td mat-cell *matCellDef="let element">{{ element.marca_artefacto }}</td>
-          </ng-container>
+        <ng-container matColumnDef="fechaEntrada">
+          <th mat-header-cell *matHeaderCellDef>Fecha Entrada</th>
+          <td mat-cell *matCellDef="let element">{{element.fechaEntrada}}</td>
+        </ng-container>
 
-          <ng-container matColumnDef="modelo_artefacto">
-            <th mat-header-cell *matHeaderCellDef>Modelo</th>
-            <td mat-cell *matCellDef="let element">{{ element.modelo_artefacto }}</td>
-          </ng-container>
+        <ng-container matColumnDef="estadoActual">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let element">
+            <span [class]="getEstadoClass(element.estadoActual)">
+              {{element.estadoTexto || 'Aceptado'}}
+            </span>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="estado_actual">
-            <th mat-header-cell *matHeaderCellDef>Estado</th>
-            <td mat-cell *matCellDef="let element">{{ element.estado_actual }}</td>
-          </ng-container>
+        <ng-container matColumnDef="fechaSalida">
+          <th mat-header-cell *matHeaderCellDef>Fecha Salida</th>
+          <td mat-cell *matCellDef="let element">
+            @if(element.fechaSalida) {
+              {{element.fechaSalida}}
+            } @else {
+              <span class="badge-pendiente">Pendiente</span>
+            }
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="botonera">
-            <th mat-header-cell *matHeaderCellDef class="place-items-center">
-              <button mat-icon.button (click)="onNuevo()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-0.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                <mat-icon>add</mat-icon>
+        <ng-container matColumnDef="botonera">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Acciones</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="flex content-around">
+              <button (click)="onInfo(element.id)" class="text-white bg-blue-700 hover:bg-blue-800 ...">
+                <mat-icon>info</mat-icon>
               </button>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="flex content-around">
-                <button mat-icon.button (click)="onInfo(element.id)" class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">
-                  <mat-icon>info</mat-icon>
-                </button>
 
-                <button mat-icon.button (click)="onEditar(element.id)" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:focus:ring-yellow-900">
+              <button (click)="abrirHistorial(element)" class="text-white bg-purple-700 hover:bg-purple-800 ...">
+                <mat-icon>history</mat-icon>
+              </button>
+
+              @if(puedeCambiarEstado(element)) {
+                <button (click)="abrirCambioEstado(element)" class="text-white bg-green-700 hover:bg-green-800 ...">
+                  <mat-icon>edit_note</mat-icon>
+                </button>
+              }
+
+              @if(puedeEditar(element)) {
+                <button (click)="onEditar(element.id)" class="text-white bg-yellow-400 hover:bg-yellow-500 ...">
                   <mat-icon>edit</mat-icon>
                 </button>
+              }
 
-                <button mat-icon.button (click)="onEliminar(element.id)" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 mx-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+              @if(puedeEliminar(element)) {
+                <button (click)="onEliminar(element.id)" class="text-white bg-red-700 hover:bg-red-800 ...">
                   <mat-icon>delete</mat-icon>
                 </button>
-              </div>
-            </td>
-          </ng-container>
-        </thead>
+              }
+            </div>
+          </td>
+        </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+        <!-- ✅ Encabezado y cuerpo separados -->
+        <thead>
+          <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        </thead>
+        <tbody>
+          <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+        </tbody>
       </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </mat-card-content>
 
-    <mat-card-footer class="bg-gray-200 h-15 flex items-center justify-center">
-      <button (click)="onImprimir()" mat-button class="!bg-esmerald-700 me-2">
-        <mat-icon>print</mat-icon>Imprimir
+    <mat-card-footer class="bg-blue-950 h-15 flex items-center rounded-lg justify-end">
+      <button (click)="onImprimir()" class="!bg-emerald-800 me-2 text-white px-4 py-2 rounded">
+        <mat-icon>printer</mat-icon> Imprimir
       </button>
-      <button [routerLink]="['/home']" mat-button class="!bg-red me-2">
-        <mat-icon>cancel</mat-icon>Cerrar
+      <button [routerLink]="['/home']" class="!bg-red-600 me-2 text-white px-4 py-2 rounded">
+        <mat-icon>cancel</mat-icon> Cerrar
       </button>
     </mat-card-footer>
   </div>

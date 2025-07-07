@@ -99,3 +99,16 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc
   "idArtefacto": 1,
   "descripcion": "Revisión del artefacto por problemas eléctricos"
 }
+
+
+###
+POST /api/caso/nuevo HTTP/1.1
+Content-Type: application/json
+Authorization: 
+
+{
+  "idTecnico": "tec001",
+  "idCreador": "admin001",
+  "idArtefacto": "AFT-1024",   // puede ser id o serie, la función lo resuelve
+  "descripcion": "La pantalla no enciende"
+}

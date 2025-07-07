@@ -1,65 +1,68 @@
-<h2 mat-dialog-title>{{ titulo }}</h2>
-
+<h2 mat-dialog-title>{{titulo}}</h2>
 <mat-dialog-content>
-  <form id="miFormulario" [formGroup]="myForm" (ngSubmit)="onGuardar()">
-    <div class="flex flex-col gap-4">
+    <form id="miFormulario" [formGroup]="myForm" (ngSubmit)="onGuardar();">
+        <div class="flex flex-col">
+            <mat-form-field>
+                <mat-label>ID Técnico</mat-label>
+                <input formControlName="idTecnico" matInput type="text" placeholder="ID del técnico responsable">
+            </mat-form-field>
+            @if(F['idTecnico'].invalid && F['idTecnico'].touched){
+                @if(F['idTecnico'].errors!['required']){
+                    <small class="text-red-600">El ID del técnico es obligatorio</small>
+                }
+                
+            }
 
-      <!-- Id Técnico -->
-      <mat-form-field appearance="fill">
-        <mat-label>ID Técnico</mat-label>
-        <input formControlName="idTecnico" matInput type="text" />
-      </mat-form-field>
-      <div class="text-red-700 text-sm" [class.hidden]="!F['idTecnico'].invalid || !F['idTecnico'].touched">
-        <div [class.hidden]="!F['idTecnico'].errors?.['required']">El ID del técnico es obligatorio</div>
-        <div [class.hidden]="!(F['idTecnico'].errors?.['minlength'] || F['idTecnico'].errors?.['maxlength'])">
-          Debe tener entre 5 y 15 caracteres
+            <!-- Campo idCreador oculto - se asigna automáticamente -->
+            <input type="hidden" formControlName="idCreador">
+            
+            <!-- Información del creador (solo para casos nuevos) -->
+            @if (!myForm.value.id) {
+                <div class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <p class="text-sm text-blue-800">
+                        <strong>Creado por:</strong> {{usuarioActual}}
+                    </p>
+                </div>
+            }
+
+            <mat-form-field>
+                <mat-label>Serie del Artefacto</mat-label>
+                <input formControlName="idArtefacto" matInput type="text" placeholder="Serie del artefacto (ej: ABC123)">
+            </mat-form-field>
+            @if(F['idArtefacto'].invalid && F['idArtefacto'].touched){
+                @if(F['idArtefacto'].errors!['required']){
+                    <small class="text-red-600">La serie del artefacto es obligatoria</small>
+                }
+                
+            }
+
+            <mat-form-field>
+                <mat-label>Descripción</mat-label>
+                <textarea formControlName="descripcion" matInput rows="3" placeholder="Describe el caso"></textarea>
+            </mat-form-field>
+            @if(F['descripcion'].invalid && F['descripcion'].touched){
+                @if(F['descripcion'].errors!['required']){
+                    <small class="text-red-600">La descripción es obligatoria</small>
+                }
+                @if(F['descripcion'].errors!['minlength']){
+                    <small class="text-red-600">Descripción demasiado corta (mínimo 5 caracteres)</small>
+                }
+                @if(F['descripcion'].errors!['maxlength']){
+                    <small class="text-red-600">Descripción demasiado larga (máximo 100 caracteres)</small>
+                }
+            }
         </div>
-      </div>
-
-      <!-- Id Creador -->
-      <mat-form-field appearance="fill">
-        <mat-label>ID Creador</mat-label>
-        <input formControlName="idCreador" matInput type="text" />
-      </mat-form-field>
-      <div class="text-red-700 text-sm" [class.hidden]="!F['idCreador'].invalid || !F['idCreador'].touched">
-        <div [class.hidden]="!F['idCreador'].errors?.['required']">El ID del creador es obligatorio</div>
-        <div [class.hidden]="!(F['idCreador'].errors?.['minlength'] || F['idCreador'].errors?.['maxlength'])">
-          Debe tener entre 5 y 15 caracteres
-        </div>
-      </div>
-
-      <!-- Id Artefacto -->
-      <mat-form-field appearance="fill">
-        <mat-label>ID Artefacto</mat-label>
-        <input formControlName="idArtefacto" matInput type="number" />
-      </mat-form-field>
-      <div class="text-red-700 text-sm" [class.hidden]="!F['idArtefacto'].invalid || !F['idArtefacto'].touched">
-        <div [class.hidden]="!F['idArtefacto'].errors?.['required']">El ID del artefacto es obligatorio</div>
-      </div>
-
-      <!-- Descripción -->
-      <mat-form-field appearance="fill">
-        <mat-label>Descripción</mat-label>
-        <textarea formControlName="descripcion" matInput rows="3"></textarea>
-      </mat-form-field>
-      <div class="text-red-700 text-sm" [class.hidden]="!F['descripcion'].invalid || !F['descripcion'].touched">
-        <div [class.hidden]="!F['descripcion'].errors?.['required']">La descripción es obligatoria</div>
-        <div [class.hidden]="!F['descripcion'].errors?.['minlength']">Mínimo 10 caracteres</div>
-        <div [class.hidden]="!F['descripcion'].errors?.['maxlength']">Máximo 100 caracteres</div>
-      </div>
-
-      <!-- Id interno oculto -->
-      <input type="hidden" formControlName="id" />
-
-    </div>
-  </form>
+        <input type="hidden" formControlName="id">
+        <input type="hidden" formControlName="fechaEntrada">
+        <input type="hidden" formControlName="fechaSalida">
+    </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button type="submit" form="miFormulario" mat-flat-button color="primary" [disabled]="myForm.invalid">
-    <mat-icon>save</mat-icon> Guardar
-  </button>
-  <button mat-button [mat-dialog-close]="false">
-    <mat-icon>cancel</mat-icon> Cerrar
-  </button>
+<mat-dialog-actions>
+    <button type="submit" form="miFormulario" [disabled]="myForm.invalid" mat-button>
+        <mat-icon>save</mat-icon> Guardar
+    </button>
+    <button mat-button [mat-dialog-close]="false">
+        <mat-icon>cancel</mat-icon>Cerrar
+    </button>
 </mat-dialog-actions>

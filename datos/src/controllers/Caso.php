@@ -135,4 +135,37 @@ class Caso {
         }
         return $response->withStatus($status);
     }
+        public function filtrarConParametros(Request $request, Response $response) {
+        $params = $request->getQueryParams(); // obtiene ?codigo=..., etc.
+        $sql = "SELECT * FROM vista_casos WHERE 1=1";
+        $bind = [];
+
+        if (!empty($params['codigo'])) {
+            $sql .= " AND id LIKE :codigo";
+            $bind['codigo'] = "%{$params['codigo']}%";
+        }
+
+        if (!empty($params['idTecnico'])) {
+            $sql .= " AND idTecnico LIKE :idTecnico";
+            $bind['idTecnico'] = "%{$params['idTecnico']}%";
+        }
+
+        if (!empty($params['idArtefacto'])) {
+            $sql .= " AND idArtefacto LIKE :idArtefacto";
+            $bind['idArtefacto'] = "%{$params['idArtefacto']}%";
+        }
+
+        if (!empty($params['descripcion'])) {
+            $sql .= " AND descripcion LIKE :descripcion";
+            $bind['descripcion'] = "%{$params['descripcion']}%";
+        }
+
+        $con = $this->container->get('base_datos');
+        $query = $con->prepare($sql);
+        $query->execute($bind);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 }

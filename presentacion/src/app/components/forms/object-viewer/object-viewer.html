@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>
+    <mat-icon>{{ icono }}</mat-icon>
+    {{ titulo }}
+</h2>
+<mat-divider class="border-2"></mat-divider>
+
+<mat-dialog-content>
+    <div class="viewer-container">
+        <mat-card class="data-card">
+            <mat-card-content>
+                <div class="data-grid">
+                    @for (item of datosArray; track item.key) {
+                        <div class="data-item">
+                            <div class="data-label">{{ item.label }}:</div>
+                            <div class="data-value">{{ formatValue(item.value) }}</div>
+                        </div>
+                    }
+                    
+                    @if (datosArray.length === 0) {
+                        <div class="no-data">
+                            <mat-icon>info</mat-icon>
+                            <span>No hay datos para mostrar</span>
+                        </div>
+                    }
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</mat-dialog-content>
+
+<mat-divider class="border-2"></mat-divider>
+
+<mat-dialog-actions>
+    <button mat-button color="primary" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+        Cerrar
+    </button>
+</mat-dialog-actions>

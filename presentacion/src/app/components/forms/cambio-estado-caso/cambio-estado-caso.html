@@ -1,0 +1,113 @@
+<!-- Header -->
+<div class="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-6">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-blue-200 text-2xl">edit_note</mat-icon>
+      <div>
+        <h2 class="text-xl font-bold m-0">Cambiar Estado del Caso</h2>
+        <p class="text-blue-200 text-sm m-0">#{{ data.codigo }}</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="cerrar()" class="text-white hover:bg-blue-700 transition-colors">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div mat-dialog-content class="p-6">
+  <!-- Estado Actual -->
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-gray-700 mb-3">Estado Actual</h3>
+    <div class="flex items-center gap-3 p-4 rounded-lg bg-gray-50 border-l-4" [ngClass]="getEstadoActualColor()">
+      <mat-icon [ngClass]="getEstadoActualColor()">{{ getEstadoActualIcono() }}</mat-icon>
+      <span class="font-medium" [ngClass]="getEstadoActualColor()">{{ getEstadoActualTexto() }}</span>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+    
+    <!-- Nuevo Estado -->
+    <div class="w-full estado-select-borde mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Nuevo Estado</label>
+      <mat-select 
+        formControlName="nuevoEstado" 
+        required
+        class="w-full bg-transparent"
+        panelClass="estado-select-panel">
+        
+        <!-- Trigger personalizado -->
+        <mat-select-trigger>
+          <div class="flex items-center gap-3" *ngIf="form.get('nuevoEstado')?.value !== null">
+            <mat-icon class="text-lg" [ngClass]="getEstadoSeleccionadoColor()">
+              {{ getEstadoSeleccionadoIcono() }}
+            </mat-icon>
+            <span class="font-medium">{{ getEstadoSeleccionadoTexto() }}</span>
+          </div>
+          <span *ngIf="form.get('nuevoEstado')?.value === null" class="text-gray-500">
+            Seleccione un estado
+          </span>
+        </mat-select-trigger>
+
+        <!-- Opciones -->
+        <mat-option 
+          *ngFor="let estado of estadosDisponibles" 
+          [value]="estado.valor"
+          [disabled]="estado.disabled">
+          <div class="flex items-center gap-3 py-1">
+            <mat-icon class="text-lg" [ngClass]="estado.color">{{ estado.icono }}</mat-icon>
+            <span class="font-medium">{{ estado.texto }}</span>
+          </div>
+        </mat-option>
+      </mat-select>
+      <div *ngIf="form.get('nuevoEstado')?.hasError('required') && form.get('nuevoEstado')?.touched" 
+           class="text-red-600 text-sm mt-1">
+        Debe seleccionar un nuevo estado
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="w-full">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Descripción del cambio</label>
+      <textarea 
+        formControlName="descripcion" 
+        placeholder="Describa los detalles del cambio de estado..."
+        rows="3"
+        maxlength="500"
+        class="w-full border border-gray-300 rounded-md px-3 py-2 bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors resize-none">
+      </textarea>
+      <div class="flex justify-between mt-1">
+        <div *ngIf="form.get('descripcion')?.hasError('maxlength')" class="text-red-600 text-sm">
+          La descripción no puede exceder 500 caracteres
+        </div>
+        <div class="text-gray-500 text-sm ml-auto">
+          {{ form.get('descripcion')?.value?.length || 0 }}/500
+        </div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error" class="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+      <mat-icon class="text-red-600">error</mat-icon>
+      <p class="m-0">{{ mensajeError }}</p>
+    </div>
+
+  </form>
+</div>
+
+<!-- Footer -->
+<div mat-dialog-actions class="flex justify-end gap-3 p-6 bg-white border-t border-gray-200">
+  <button mat-button (click)="cerrar()" [disabled]="cargando" class="px-6 py-2 text-gray-600 hover:bg-gray-100 transition-colors">
+    Cancelar
+  </button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()"
+    [disabled]="form.invalid || cargando"
+    class="flex items-center gap-2 px-6 py-2 min-w-[140px]">
+    <mat-spinner *ngIf="cargando" diameter="16"></mat-spinner>
+    <mat-icon *ngIf="!cargando">save</mat-icon>
+    {{ cargando ? 'Cambiando...' : 'Cambiar Estado' }}
+  </button>
+</div>

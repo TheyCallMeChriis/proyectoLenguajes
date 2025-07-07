@@ -95,4 +95,26 @@ export class AuthService {
     }
   }
 
+    private mapearUsuarioDesdeToken(tokenD: any): User {
+    return new User({
+      idUsuario: tokenD.sub,
+      nombre: tokenD.nom,
+      rol: Number(tokenD.rol) // <-- forzar que siempre sea número
+    });
+  }
+  public get userActualDos(): User {
+  if (!this.srvToken.token) {
+    console.warn('❌ No hay token');
+    return new User();
+  }
+  const tokenD = this.srvToken.decodeToken();
+  console.log('🧩 Token decodificado:', tokenD); // <-- VER QUÉ CAMPOS TIENE
+
+  return new User({
+    idUsuario: tokenD.sub,
+    nombre: tokenD.nom,
+    rol: Number(tokenD.rol)
+  });
+}
+
 }

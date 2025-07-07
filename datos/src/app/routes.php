@@ -60,9 +60,11 @@
             $endpoint->get('/estado', Caso::class . ':consultarEstado');
             $endpoint->post('/estado/{id}', Caso::class . ':modificarEstado');
             $endpoint->get('/cliente/{id}', Caso::class . ':consultarPorCliente');
-            $endpoint->get('/filtrar/{inicio}/{cantidad}', Caso::class . ':filtrar');
+           //$endpoint->get('/filtrar/{inicio}/{cantidad}', Caso::class . ':filtrar');
             $endpoint->get('/tecnico/{id}', Caso::class . ':consultarPorTecnico');
             $endpoint->get('/artefacto/{id}', Caso::class . ':consultarPorArtefacto');
+            $endpoint->get('/filtrar', Caso::class . ':filtrarConParametros');
+           // $endpoint->get('/filtrar', Caso::class . ':filtrar');
         });
 
         
