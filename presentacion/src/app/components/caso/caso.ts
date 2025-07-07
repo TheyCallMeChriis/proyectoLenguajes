@@ -21,8 +21,15 @@ import { RouterModule } from '@angular/router';
   selector: 'app-caso',
   standalone: true,
   imports: [
-    MatCardModule, MatTableModule, MatIconModule, MatExpansionModule, MatPaginatorModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule, RouterModule
+    MatCardModule,
+    MatTableModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    RouterModule
   ],
   templateUrl: './caso.html',
   styleUrls: ['./caso.css']
@@ -42,7 +49,9 @@ export class Caso implements AfterViewInit {
     'estado_actual', 'botonera'
   ];
   dataSource = signal(new MatTableDataSource<TipoCaso>());
-  filtro: any;
+
+  // ✅ Aquí está el cambio: inicialización del filtro
+  filtro: any = { id: '', nombre_cliente: '', marca_artefacto: '', estado_actual: '' };
 
   mostrarDialogo(titulo: string, datos?: TipoCaso) {
     const dialogoRef = this.dialogo.open(FrmCaso, {

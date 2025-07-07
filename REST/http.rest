@@ -88,3 +88,14 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc
   "categoria": "Celular",
   "descripcion": "Pantalla dañada"
 }
+###
+POST http://localhost:8000/api/caso
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NTE4OTY2NDEsInJvbCI6IjEiLCJub20iOiJTb2ZpYSJ9.0I06ZKGXA6s9TK5rFvdAGOjbU4OJCzd_BeKCExi82Y4
+
+{
+  "idTecnico": "18",
+  "idCreador": "3",
+  "idArtefacto": 1,
+  "descripcion": "Revisión del artefacto por problemas eléctricos"
+}
